@@ -1,3 +1,4 @@
+using Flunt.Validations;
 using Store.Shared.Entities;
 
 namespace Store.Domain.Entities
@@ -9,6 +10,14 @@ namespace Store.Domain.Entities
 
             Username = username;
             Password = password;
+            AddNotifications(new Contract().Requires()
+            .HasMinLen(Username, 3, "Username", "O User Name deve conter ao mínimo 3 caracteres !")
+            .HasMaxLen(Username, 8, "Username", "O User Name conter ao máximo 8 caracteres !")
+            .IsNotNullOrEmpty(Username, "Username", "O User Name não pode ser vazio !")
+            .HasMaxLen(Password, 12, "Password", "A senha deve ter até 12 caracteres !")
+            .HasMinLen(Password, 8, "Password", "A senha deve ter no mínimo até 8 caracteres !")
+            .IsNotNullOrEmpty(Password, "Password", "A senha não pode ser vazia !")
+            );
         }
 
 
