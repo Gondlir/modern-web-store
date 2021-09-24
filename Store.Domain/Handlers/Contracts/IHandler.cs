@@ -4,6 +4,6 @@ namespace Store.Domain.Handlers.Contracts
 {
     public interface IHandler<T> where T : ICommand
     {
-        void Handle(T command);
+        ICommandResult Handle(T command);
     }
 }

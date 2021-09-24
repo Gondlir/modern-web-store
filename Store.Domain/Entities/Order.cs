@@ -22,7 +22,8 @@ namespace Store.Domain.Entities
             _items = new List<OrderItem>();
 
             AddNotifications(new Contract().Requires()
-            .IsGreaterThan(DeliveryPrice, 0, "DeliveryPrice", "Disconto precisa ser maior que zero")
+            .IsGreaterThan(DeliveryPrice, 0, "DeliveryPrice", "Preço da entrega deve ser maior que zero")
+            .IsGreaterThan(Discounts, -1, "Discounts", "Disconto precisa ser maior que zero")
             );
         }
 
