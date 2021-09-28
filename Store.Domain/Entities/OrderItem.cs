@@ -1,12 +1,20 @@
+using System;
+using Flunt.Notifications;
 using Flunt.Validations;
 using Store.Shared.Entities;
 
 namespace Store.Domain.Entities
 {
-    public class OrderItem : Entity
+
+    public class OrderItem : Notifiable
     {
+        protected OrderItem()
+        {
+
+        }
         public OrderItem(Product product, int quantity)
         {
+            Id = Guid.NewGuid();
             Product = product;
             Quantity = quantity;
             Price = Product.Price;
@@ -21,7 +29,7 @@ namespace Store.Domain.Entities
             );
             Product.DecreaseQuantity(quantity);
         }
-
+        public Guid Id { get; private set; }
         public Product Product { get; private set; }
         public int Quantity { get; private set; }
         public decimal Price { get; private set; }

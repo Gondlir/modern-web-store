@@ -1,14 +1,20 @@
+using System;
 using System.Text;
+using Flunt.Notifications;
 using Flunt.Validations;
 using Store.Shared.Entities;
 
 namespace Store.Domain.Entities
 {
-    public class User : Entity
+    public class User : Notifiable
     {
-        public User(string username, string password, string confirmpassword)
+        protected User()
         {
 
+        }
+        public User(string username, string password, string confirmpassword)
+        {
+            Id = Guid.NewGuid();
             Username = username;
             Password = EncryptPassword(password);
             ConfirmPassword = password;
@@ -26,7 +32,7 @@ namespace Store.Domain.Entities
             );
         }
 
-
+        public Guid Id { get; private set; }
         public string Username { get; private set; }
         public string Password { get; private set; }
         public string ConfirmPassword { get; private set; }

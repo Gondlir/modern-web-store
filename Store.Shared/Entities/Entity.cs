@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using Flunt.Notifications;
 
 namespace Store.Shared.Entities
@@ -10,6 +11,7 @@ namespace Store.Shared.Entities
             Id = Guid.NewGuid();
         }
 
+        [Key]
         public Guid Id { get; private set; }
     }
 }

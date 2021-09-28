@@ -5,22 +5,27 @@ using Store.Shared.Entities;
 
 namespace Store.Domain.Entities
 {
-    public class Customer : Entity
+    public class Customer
     {
-        public Customer(Name name, Document document, Email email, User user)
+        protected Customer()
         {
 
+        }
+        public Customer(Name name, Document document, Email email, User user)
+        {
+            Id = Guid.NewGuid();
             Name = name;
             Document = document;
             BirthDate = null;
             Email = email;
             User = user;
         }
-        public Name Name { get; private set; }
-        public Document Document { get; private set; }
+        public Guid Id { get; private set; }
+        public virtual Name Name { get; private set; }
+        public virtual Document Document { get; private set; }
         public DateTime? BirthDate { get; private set; }
-        public Email Email { get; private set; }
-        public User User { get; private set; }
+        public virtual Email Email { get; private set; }
+        public virtual User User { get; private set; }
         public override string ToString()
         {
             return $"{Name}";

@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="flunt" Version="1.0.5" />
+    <ProjectReference Include="..\Store.Shared\Store.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Store.Shared\Store.Shared.csproj" />
+    <PackageReference Include="Flunt" Version="1.0.4" />
   </ItemGroup>
 
 </Project>

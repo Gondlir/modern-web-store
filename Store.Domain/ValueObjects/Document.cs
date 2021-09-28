@@ -2,6 +2,7 @@ using Flunt.Notifications;
 
 namespace Store.Domain.ValueObjects
 {
+
     public class Document : Notifiable
     {
         protected Document() { }
@@ -12,7 +13,7 @@ namespace Store.Domain.ValueObjects
             if (!Validate(number))
                 AddNotification("Document", "CPF inválido");
         }
-        public string Number { get; private set; }
+        public string Number { get; set; }
 
         public bool Validate(string cpf)
         {

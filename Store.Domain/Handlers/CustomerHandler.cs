@@ -18,31 +18,28 @@ namespace Store.Domain.Handlers
         public ICommandResult Handle(RegisterCustomerCommand command)
         {
 
+            command.Validate();
             if (_customerRepo.DocumentExist(command.Document))
             {
-                AddNotification("Document", "Documento já está sendo usado !!!");
+
                 return new GenericCommandResult
                 {
-                    Message = "Não foi possível realizar cadastro !"
-
+                    Message = "Não foi possível realizar cadastro. Documento já cadastrado !"
                 };
             }
+
+            if (command.Invalid)
+                return new GenericCommandResult
+                {
+                    Message = ("Opaa, parece que deu algo errado no registro !")
+                };
             var name = new Name(command.FirstName, command.LastName);
             var document = new Document(command.Document);
             var email = new Email(command.Email);
             var user = new User(command.Username, command.Password, command.ConfirmPassword);
             var customer = new Customer(name, document, email, user);
 
-            AddNotifications(customer.Notifications);
-            AddNotifications(name.Notifications);
-            AddNotifications(document.Notifications);
-            AddNotifications(email.Notifications);
-            AddNotifications(user.Notifications);
-
-            if (Valid)
-            {
-                _customerRepo.Save(customer);
-            }
+            _customerRepo.Save(customer);
             //enviar email
             // _emailService.Send(
             //     customer.Name.ToString(), 

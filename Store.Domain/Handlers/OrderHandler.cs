@@ -20,6 +20,14 @@ namespace Store.Domain.Handlers
         }
         public ICommandResult Handle(RegisterOrderCommand command)
         {
+            command.Validate();
+            if (command.Invalid)
+                return new GenericCommandResult
+                {
+                    Message = ("Opaa, parece que deu algo errado no registro !")
+                };
+
+
             var customer = _customerRepo.GetCustomer(command.Customer);
             var order = new Order(customer, command.DeliverPrice, command.Discount);
 
@@ -29,12 +37,7 @@ namespace Store.Domain.Handlers
                 order.AddItem(new OrderItem(product, item.Quantity));
             }
 
-            AddNotifications(order.Notifications);
-
-            if (Valid)
-            {
-                _orderRepo.Save(order);
-            }
+            _orderRepo.Save(order);
             return new GenericCommandResult
             {
                 Name = order.Number,
