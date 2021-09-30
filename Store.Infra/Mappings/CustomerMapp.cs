@@ -12,13 +12,13 @@ namespace Store.Infra.Mappings
             builder.ToTable("Customer");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.BirthDate);
-            builder.Property(x => x.Document.Number).IsRequired().HasMaxLength(11).IsFixedLength();
-            builder.Property(x => x.Email.Address).IsRequired().HasMaxLength(160);
-            builder.Property(x => x.Name.FirstName).IsRequired().HasMaxLength(60);
-            builder.Property(x => x.Name.LastName).IsRequired().HasMaxLength(60);
-            builder.Property(x => x.User.Username).IsRequired().HasMaxLength(20);
-            builder.Property(x => x.User.Password).IsRequired().HasMaxLength(32).IsFixedLength();
-            builder.Property(x => x.User.Active);
+            builder.OwnsOne(x => x.Document).Property(x => x.Number).IsRequired().HasMaxLength(11).IsFixedLength();
+            builder.OwnsOne(x => x.Email).Property(x => x.Address).IsRequired().HasMaxLength(160);
+            builder.OwnsOne(x => x.Name).Property(x => x.FirstName).IsRequired().HasMaxLength(60);
+            builder.OwnsOne(x => x.Name).Property(x => x.LastName).IsRequired().HasMaxLength(60);
+            builder.OwnsOne(x => x.User).Property(x => x.Username).IsRequired().HasMaxLength(20);
+            builder.OwnsOne(x => x.User).Property(x => x.Password).IsRequired().HasMaxLength(32).IsFixedLength();
+            builder.OwnsOne(x => x.User).Property(x => x.Active);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Store.Infra.Context
             modelBuilder.ApplyConfiguration(new ProductMapp());
             modelBuilder.ApplyConfiguration(new OrderItemMapp());
             modelBuilder.ApplyConfiguration(new OrderMapp());
-            modelBuilder.ApplyConfiguration(new UserMapping());
+            //modelBuilder.ApplyConfiguration(new UserMapping());
 
         }
     }

@@ -17,7 +17,7 @@ namespace Store.Infra.Mappings
             builder.Property(x => x.Number).IsRequired().HasMaxLength(8).IsFixedLength();
             builder.Property(x => x.Status);
             builder.HasMany(x => x.Items);
-            builder.Property(x => x.Customer);
+            builder.HasKey(x => x.Customer);
         }
     }
 }
