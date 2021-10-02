@@ -5,7 +5,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Store.Domain.Repositories;
 using Store.Infra.Context;
+using Store.Infra.Repositories;
+using Store.Infra.Transactions;
 
 namespace Store.Api
 {
@@ -23,6 +26,13 @@ namespace Store.Api
         {
 
             services.AddControllers();
+            services.AddMvc();
+            services.AddCors();
+            services.AddScoped<DataContext, DataContext>();
+            services.AddTransient<IUow, Uow>();
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
             services.AddDbContext<DataContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("banana")));
             services.AddSwaggerGen(c =>
             {
@@ -40,6 +50,13 @@ namespace Store.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Store.Api v1"));
             }
 
+            app.UseCors(x =>
+            {
+                x.AllowAnyHeader();
+                x.AllowAnyMethod();
+                x.AllowAnyOrigin();
+            });
+            app.UseMvc();
             app.UseHttpsRedirection();
 
             app.UseRouting();
