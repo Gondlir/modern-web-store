@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using Dapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Store.Domain.Commands;
 using Store.Domain.Entities;
@@ -23,15 +25,24 @@ namespace Store.Infra.Repositories
 
         public CustomerQueryResult GetQueryResult(string username)
         {
-            return _context.Customers.Include(x => x.User).AsNoTracking().Select(x => new CustomerQueryResult
+            // return _context.Customers.Include(x => x.User).AsNoTracking().Select(x => new CustomerQueryResult
+            // {
+            //     Name = x.Name.ToString(),
+            //     Document = x.Document.Number,
+            //     Active = x.User.Active,
+            //     Email = x.Email.Address,
+            //     Password = x.User.Password,
+            //     Username = x.User.Username
+            // }).FirstOrDefault(x => x.Username == username);
+
+            using (var conn = new SqlConnection(@""))
             {
-                Name = x.Name.ToString(),
-                Document = x.Document.Number,
-                Active = x.User.Active,
-                Email = x.Email.Address,
-                Password = x.User.Password,
-                Username = x.User.Username
-            }).FirstOrDefault(x => x.Username == username);
+                conn.Open();
+                return conn.Query<CustomerQueryResult>("SELECT * FROM [GetCustomerInfo] WHERE [Active]=1 AND [Username]=@username", new
+                {
+                    username = username
+                }).FirstOrDefault();
+            }
         }
 
         public Customer GetCustomer(Guid id)
