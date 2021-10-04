@@ -9,11 +9,15 @@ using Store.Shared.Services;
 
 namespace Store.Domain.Handlers
 {
-    public class UpdateCustomerHandler : Notifiable,
+    public class CustomerHandler : Notifiable,
     IHandler<RegisterCustomerCommand>
     {
         private readonly ICustomerRepository _customerRepo;
         private readonly IEmailService _emailService;
+        public CustomerHandler(ICustomerRepository repo)
+        {
+            _customerRepo = repo;
+        }
 
         public ICommandResult Handle(RegisterCustomerCommand command)
         {
@@ -21,18 +25,13 @@ namespace Store.Domain.Handlers
             command.Validate();
             if (_customerRepo.DocumentExist(command.Document))
             {
-
-                return new GenericCommandResult
-                {
-                    Message = "Não foi possível realizar cadastro. Documento já cadastrado !"
-                };
+                return new GenericCommandResult(false, "Não foi possível realizar cadastro. Documento já cadastrado !", command.Notifications);
             }
 
             if (command.Invalid)
-                return new GenericCommandResult
-                {
-                    Message = ("Opaa, parece que deu algo errado no registro !")
-                };
+            {
+                return new GenericCommandResult(false, "Opaa, parece que deu algo errado no registro !", command.Notifications);
+            }
             var name = new Name(command.FirstName, command.LastName);
             var document = new Document(command.Document);
             var email = new Email(command.Email);
@@ -46,11 +45,7 @@ namespace Store.Domain.Handlers
             //     customer.Email.Address, 
             //     "Bem Vindo a eiMaZon", string.Format(EmailTemplate ))
             //
-            return new GenericCommandResult
-            {
-                Name = customer.Name.ToString(),
-                Message = "Cadastrado com sucesso !"
-            };
+            return new GenericCommandResult(true, "Cadastrado com sucesso !", command.Notifications);
         }
     }
 }

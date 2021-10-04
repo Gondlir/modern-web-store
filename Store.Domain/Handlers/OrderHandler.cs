@@ -22,12 +22,9 @@ namespace Store.Domain.Handlers
         {
             command.Validate();
             if (command.Invalid)
-                return new GenericCommandResult
-                {
-                    Message = ("Opaa, parece que deu algo errado no registro !")
-                };
-
-
+            {
+                return new GenericCommandResult(false, "Opaa, parece que deu algo errado no registro !", command.Notifications);
+            }
             var customer = _customerRepo.GetCustomer(command.Customer);
             var order = new Order(customer, command.DeliverPrice, command.Discount);
 
@@ -38,11 +35,7 @@ namespace Store.Domain.Handlers
             }
 
             _orderRepo.Save(order);
-            return new GenericCommandResult
-            {
-                Name = order.Number,
-                Message = "Produto cadastrado com sucesso !"
-            };
+            return new GenericCommandResult(true, "Ordem cadastrada com sucesso !", command.Notifications);
         }
     }
 }

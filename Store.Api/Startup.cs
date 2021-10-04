@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Store.Domain.Handlers;
 using Store.Domain.Repositories;
 using Store.Infra.Context;
 using Store.Infra.Repositories;
@@ -26,11 +27,13 @@ namespace Store.Api
         {
 
             services.AddControllers();
-            services.AddMvc();
+            services.AddMvc(opt => opt.EnableEndpointRouting = false);
             services.AddCors();
             services.AddScoped<DataContext, DataContext>();
             services.AddTransient<IUow, Uow>();
             services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddTransient<CustomerHandler, CustomerHandler>();
+            services.AddTransient<OrderHandler, OrderHandler>();
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddDbContext<DataContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("banana")));
@@ -56,13 +59,13 @@ namespace Store.Api
                 x.AllowAnyMethod();
                 x.AllowAnyOrigin();
             });
-            app.UseMvc();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseMvc();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

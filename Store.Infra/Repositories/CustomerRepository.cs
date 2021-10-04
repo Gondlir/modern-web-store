@@ -53,7 +53,7 @@ namespace Store.Infra.Repositories
         public void Save(Customer customer)
         {
             _context.Customers.Add(customer);
-
+            _context.SaveChanges();
         }
 
         public void Update(Customer customer)
