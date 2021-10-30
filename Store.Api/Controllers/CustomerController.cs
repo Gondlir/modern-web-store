@@ -22,16 +22,8 @@ namespace Store.Api
         [HttpPost]
         [Route("v1/customers")]
         public GenericCommandResult PostCustomer([FromBody] RegisterCustomerCommand command, [FromServices] CustomerHandler handler)
-        {
-            if (handler.Valid)
-            {
-                return (GenericCommandResult)handler.Handle(command);
-            }
-            else
-            {
-                return (GenericCommandResult)handler.Handle(command);
-            }
-
+        { 
+            return (GenericCommandResult)handler.Handle(command);      
         }
         [HttpGet]
         [Route("v1/customers")]

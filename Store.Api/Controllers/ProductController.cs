@@ -2,6 +2,8 @@ using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using Store.Domain.Commands;
+using Store.Domain.Handlers;
 using Store.Domain.Repositories;
 
 namespace Store.Api
@@ -10,9 +12,10 @@ namespace Store.Api
     public class ProductController : Controller
     {
         private readonly IProductRepository _repository;
-        public ProductController(IProductRepository repo)
+        private readonly CustomerHandler _handler;
+        public ProductController(CustomerHandler handler)
         {
-            _repository = repo;
+            _handler = handler;
         }
         [HttpGet]
         [Route("v1/products")]
@@ -28,9 +31,9 @@ namespace Store.Api
         }
         [HttpPost]
         [Route("v1/products")]
-        public string PostProduct()
+        public GenericCommandResult PostProduct([FromBody] RegisterCustomerCommand command, [FromServices] CustomerHandler handler)
         {
-            return $"Produto";
+            return (GenericCommandResult)handler.Handle(command);
         }
     }
 }

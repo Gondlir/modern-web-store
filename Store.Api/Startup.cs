@@ -29,7 +29,7 @@ namespace Store.Api
             services.AddControllers();
             services.AddMvc(opt => opt.EnableEndpointRouting = false);
             services.AddCors();
-            services.AddScoped<DataContext, DataContext>();
+            //services.AddScoped<DataContext, DataContext>();
             services.AddTransient<IUow, Uow>();
             services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddTransient<CustomerHandler, CustomerHandler>();

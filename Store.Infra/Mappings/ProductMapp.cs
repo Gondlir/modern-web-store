@@ -12,7 +12,7 @@ namespace Store.Infra.Mappings
             builder.ToTable("Product");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Image).IsRequired().HasMaxLength(1024);
-            builder.Property(x => x.Price);
+            builder.Property(x => x.Price).HasColumnType("money");
             builder.Property(x => x.QuantityInBase);
             builder.Property(x => x.Title).IsRequired().HasMaxLength(80);
         }
